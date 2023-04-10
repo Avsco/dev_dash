@@ -8,7 +8,7 @@ import { ReactComponent as Forks } from "../../assets/svg/repo-forked.svg";
 import { ReactComponent as Start } from "../../assets/svg/star.svg";
 import { ReactComponent as Unlock } from "../../assets/svg/unlock.svg";
 import { ReactComponent as Watchers } from "../../assets/svg/watchers.svg";
-import { inMemoryGithubRepositoryRepository } from "../../infrastruture/inMemoryGithubRepositoryRepository";
+import { InMemoryGithubRepositoryRepository } from "../../infrastruture/InMemoryGithubRepositoryRepository";
 import styles from "./Dashboard.module.scss";
 
 const isoToReadableDate = (lastUpdate: string): string => {
@@ -28,7 +28,7 @@ const isoToReadableDate = (lastUpdate: string): string => {
 	return `${diffDays} days ago`;
 };
 
-const repository = new inMemoryGithubRepositoryRepository();
+const repository = new InMemoryGithubRepositoryRepository();
 
 export function Dashboard() {
 	const repositories = repository.search();
