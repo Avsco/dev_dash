@@ -8,7 +8,7 @@ import { ReactComponent as Forks } from "../../assets/svg/repo-forked.svg";
 import { ReactComponent as Start } from "../../assets/svg/star.svg";
 import { ReactComponent as Unlock } from "../../assets/svg/unlock.svg";
 import { ReactComponent as Watchers } from "../../assets/svg/watchers.svg";
-import { githubApiResponses } from "../../github_api_responses";
+import { inMemoryGithubRepositoryRepository } from "../../infrastruture/inMemoryGithubRepositoryRepository";
 import styles from "./Dashboard.module.scss";
 
 const isoToReadableDate = (lastUpdate: string): string => {
@@ -28,7 +28,11 @@ const isoToReadableDate = (lastUpdate: string): string => {
 	return `${diffDays} days ago`;
 };
 
+const repository = new inMemoryGithubRepositoryRepository();
+
 export function Dashboard() {
+	const repositories = repository.search();
+
 	return (
 		<>
 			<header className={styles.header}>
@@ -38,7 +42,7 @@ export function Dashboard() {
 				</section>
 			</header>
 			<section className={styles.container}>
-				{githubApiResponses.map((widget) => (
+				{repositories.map((widget) => (
 					<article className={styles.widget} key={widget.repositoryData.id}>
 						<header className={styles.widget__header}>
 							<a
