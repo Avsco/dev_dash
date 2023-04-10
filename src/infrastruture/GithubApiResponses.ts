@@ -1,44 +1,52 @@
-export interface CiStatus {
-	total_count: number;
-	workflow_runs: Workflowrun[];
+interface Permissions {
+	admin: boolean;
+	maintain: boolean;
+	push: boolean;
+	triage: boolean;
+	pull: boolean;
 }
 
-interface Workflowrun {
-	id: number;
+interface Author {
 	name: string;
+	email: string;
+}
+
+interface Headcommit {
+	id: string;
+	tree_id: string;
+	message: string;
+	timestamp: string;
+	author: Author;
+	committer: Author;
+}
+
+interface License {
+	key: string;
+	name: string;
+	spdx_id: string;
+	url: string;
 	node_id: string;
-	head_branch: string;
-	head_sha: string;
-	path: string;
-	display_title: string;
-	run_number: number;
-	event: string;
-	status: string;
-	conclusion: string;
-	workflow_id: number;
-	check_suite_id: number;
-	check_suite_node_id: string;
+}
+
+interface Owner {
+	login: string;
+	id: number;
+	node_id: string;
+	avatar_url: string;
+	gravatar_id: string;
 	url: string;
 	html_url: string;
-	pull_requests: any[];
-	created_at: string;
-	updated_at: string;
-	actor: Owner;
-	run_attempt: number;
-	referenced_workflows: any[];
-	run_started_at: string;
-	triggering_actor: Owner;
-	jobs_url: string;
-	logs_url: string;
-	check_suite_url: string;
-	artifacts_url: string;
-	cancel_url: string;
-	rerun_url: string;
-	previous_attempt_url?: any;
-	workflow_url: string;
-	head_commit: Headcommit;
-	repository: Repository;
-	head_repository: Repository;
+	followers_url: string;
+	following_url: string;
+	gists_url: string;
+	starred_url: string;
+	subscriptions_url: string;
+	organizations_url: string;
+	repos_url: string;
+	events_url: string;
+	received_events_url: string;
+	type: string;
+	site_admin: boolean;
 }
 
 interface Repository {
@@ -90,80 +98,51 @@ interface Repository {
 	deployments_url: string;
 }
 
-interface Headcommit {
-	id: string;
-	tree_id: string;
-	message: string;
-	timestamp: string;
-	author: Author;
-	committer: Author;
-}
-
-interface Author {
-	name: string;
-	email: string;
-}
-
-export interface PullRequest {
-	url: string;
+interface Workflowrun {
 	id: number;
+	name: string;
 	node_id: string;
+	head_branch: string;
+	head_sha: string;
+	path: string;
+	display_title: string;
+	run_number: number;
+	event: string;
+	status: string;
+	conclusion: string;
+	workflow_id: number;
+	check_suite_id: number;
+	check_suite_node_id: string;
+	url: string;
 	html_url: string;
-	diff_url: string;
-	patch_url: string;
-	issue_url: string;
-	number: number;
-	state: string;
-	locked: boolean;
-	title: string;
-	user: Owner;
-	body: string;
+	pull_requests: any[];
 	created_at: string;
 	updated_at: string;
-	closed_at?: any;
-	merged_at?: any;
-	merge_commit_sha?: string;
-	assignee?: any;
-	assignees: any[];
-	requested_reviewers: any[];
-	requested_teams: any[];
-	labels: any[];
-	milestone?: any;
-	draft: boolean;
-	commits_url: string;
-	review_comments_url: string;
-	review_comment_url: string;
-	comments_url: string;
-	statuses_url: string;
-	head: Head;
-	base: Base;
-	_links: Links;
-	author_association: string;
-	auto_merge?: any;
-	active_lock_reason?: any;
+	actor: Owner;
+	run_attempt: number;
+	referenced_workflows: any[];
+	run_started_at: string;
+	triggering_actor: Owner;
+	jobs_url: string;
+	logs_url: string;
+	check_suite_url: string;
+	artifacts_url: string;
+	cancel_url: string;
+	rerun_url: string;
+	previous_attempt_url?: any;
+	workflow_url: string;
+	head_commit: Headcommit;
+	repository: Repository;
+	head_repository: Repository;
 }
 
-interface Links {
-	self: Self;
-	html: Self;
-	issue: Self;
-	comments: Self;
-	review_comments: Self;
-	review_comment: Self;
-	commits: Self;
-	statuses: Self;
+export interface CiStatus {
+	total_count: number;
+	workflow_runs: Workflowrun[];
 }
 
 interface Self {
 	href: string;
-}
-
-interface Base {
-	label: string;
-	ref: string;
-	sha: string;
-	user: Owner;
-	repo: Repo2;
 }
 
 interface Repo2 {
@@ -247,12 +226,22 @@ interface Repo2 {
 	default_branch: string;
 }
 
-interface Head {
+interface Base {
 	label: string;
 	ref: string;
 	sha: string;
 	user: Owner;
-	repo: Repo;
+	repo: Repo2;
+}
+interface Links {
+	self: Self;
+	html: Self;
+	issue: Self;
+	comments: Self;
+	review_comments: Self;
+	review_comment: Self;
+	commits: Self;
+	statuses: Self;
 }
 
 interface Repo {
@@ -334,6 +323,53 @@ interface Repo {
 	open_issues: number;
 	watchers: number;
 	default_branch: string;
+}
+
+interface Head {
+	label: string;
+	ref: string;
+	sha: string;
+	user: Owner;
+	repo: Repo;
+}
+
+export interface PullRequest {
+	url: string;
+	id: number;
+	node_id: string;
+	html_url: string;
+	diff_url: string;
+	patch_url: string;
+	issue_url: string;
+	number: number;
+	state: string;
+	locked: boolean;
+	title: string;
+	user: Owner;
+	body: string;
+	created_at: string;
+	updated_at: string;
+	closed_at?: any;
+	merged_at?: any;
+	merge_commit_sha?: string;
+	assignee?: any;
+	assignees: any[];
+	requested_reviewers: any[];
+	requested_teams: any[];
+	labels: any[];
+	milestone?: any;
+	draft: boolean;
+	commits_url: string;
+	review_comments_url: string;
+	review_comment_url: string;
+	comments_url: string;
+	statuses_url: string;
+	head: Head;
+	base: Base;
+	_links: Links;
+	author_association: string;
+	auto_merge?: any;
+	active_lock_reason?: any;
 }
 
 export interface RepositoryData {
@@ -422,49 +458,7 @@ export interface RepositoryData {
 	subscribers_count: number;
 }
 
-interface Permissions {
-	admin: boolean;
-	maintain: boolean;
-	push: boolean;
-	triage: boolean;
-	pull: boolean;
-}
-
-interface License {
-	key: string;
-	name: string;
-	spdx_id: string;
-	url: string;
-	node_id: string;
-}
-
-interface Owner {
-	login: string;
-	id: number;
-	node_id: string;
-	avatar_url: string;
-	gravatar_id: string;
-	url: string;
-	html_url: string;
-	followers_url: string;
-	following_url: string;
-	gists_url: string;
-	starred_url: string;
-	subscriptions_url: string;
-	organizations_url: string;
-	repos_url: string;
-	events_url: string;
-	received_events_url: string;
-	type: string;
-	site_admin: boolean;
-}
-
-export interface RepositoryId {
-	name: string;
-	organization: string;
-}
-
-export interface GithubApiResponses {
+export interface GitHubApiResponses {
 	repositoryData: RepositoryData;
 	pullRequests: PullRequest[];
 	ciStatus: CiStatus;

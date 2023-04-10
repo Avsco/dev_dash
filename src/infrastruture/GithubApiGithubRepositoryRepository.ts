@@ -1,10 +1,9 @@
-import {
-	CiStatus,
-	GithubApiResponses,
-	PullRequest,
-	RepositoryData,
-	RepositoryId,
-} from "./GithubApiResponses";
+import { CiStatus, GitHubApiResponses, PullRequest, RepositoryData } from "./GithubApiResponses";
+
+interface RepositoryId {
+	organization: string;
+	name: string;
+}
 
 export class GithubApiGithubRepositoryRepository {
 	private readonly endpoints = [
@@ -15,7 +14,7 @@ export class GithubApiGithubRepositoryRepository {
 
 	constructor(private readonly personalAccessToken: string) {}
 
-	async search(repositoryUrls: string[]): Promise<GithubApiResponses[]> {
+	async search(repositoryUrls: string[]): Promise<GitHubApiResponses[]> {
 		const responsePromises = repositoryUrls
 			.map((url) => this.urlToId(url))
 			.map((id) => this.searchBy(id));
@@ -23,7 +22,7 @@ export class GithubApiGithubRepositoryRepository {
 		return Promise.all(responsePromises);
 	}
 
-	private async searchBy(repositoryId: RepositoryId): Promise<GithubApiResponses> {
+	private async searchBy(repositoryId: RepositoryId): Promise<GitHubApiResponses> {
 		const repositoryRequest = this.endpoints
 			.map((endpoint) => endpoint.replace("$organization", repositoryId.organization))
 			.map((endpoint) => endpoint.replace("$name", repositoryId.name))
