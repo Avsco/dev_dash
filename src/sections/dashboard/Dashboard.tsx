@@ -11,8 +11,8 @@ import { ReactComponent as Start } from "../../assets/svg/star.svg";
 import { ReactComponent as Unlock } from "../../assets/svg/unlock.svg";
 import { ReactComponent as Watchers } from "../../assets/svg/watchers.svg";
 import { config } from "../../devdash_config";
-import { GithubApiGithubRepositoryRepository } from "../../infrastruture/GithubApiGithubRepositoryRepository";
-import { GitHubApiResponses } from "../../infrastruture/GithubApiResponses";
+import { GitHubApiGitHubRepositoryRepository } from "../../infrastructure/GitHubApiGitHubRepositoryRepository";
+import { GitHubApiResponses } from "../../infrastructure/GithubApiResponses";
 import styles from "./Dashboard.module.scss";
 
 const isoToReadableDate = (lastUpdate: string): string => {
@@ -32,16 +32,16 @@ const isoToReadableDate = (lastUpdate: string): string => {
 	return `${diffDays} days ago`;
 };
 
-const repository = new GithubApiGithubRepositoryRepository(config.github_access_token);
-
 export function Dashboard() {
-	const [githubApiResponse, setGitHubApiResponse] = useState<GitHubApiResponses[]>([]);
+	const repository = new GitHubApiGitHubRepositoryRepository(config.github_access_token);
+	const [repositoryData, setRepositoryData] = useState<GitHubApiResponses[]>([]);
 
 	useEffect(() => {
 		repository
-			.search(config.widgets.map((widgets) => widgets.repository_url))
-			.then((responses) => setGitHubApiResponse(responses))
-			.catch(console.error);
+			.search(config.widgets.map((widget) => widget.repository_url))
+			.then((repositoryData) => {
+				setRepositoryData(repositoryData);
+			});
 	}, []);
 
 	return (
@@ -53,7 +53,7 @@ export function Dashboard() {
 				</section>
 			</header>
 			<section className={styles.container}>
-				{githubApiResponse.map((widget) => (
+				{repositoryData.map((widget) => (
 					<article className={styles.widget} key={widget.repositoryData.id}>
 						<header className={styles.widget__header}>
 							<a

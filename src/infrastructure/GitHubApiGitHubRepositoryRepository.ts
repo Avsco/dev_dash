@@ -5,7 +5,7 @@ interface RepositoryId {
 	name: string;
 }
 
-export class GithubApiGithubRepositoryRepository {
+export class GitHubApiGitHubRepositoryRepository {
 	private readonly endpoints = [
 		"https://api.github.com/repos/$organization/$name",
 		"https://api.github.com/repos/$organization/$name/pulls",
