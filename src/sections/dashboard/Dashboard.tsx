@@ -12,7 +12,7 @@ import { ReactComponent as Unlock } from "../../assets/svg/unlock.svg";
 import { ReactComponent as Watchers } from "../../assets/svg/watchers.svg";
 import { config } from "../../devdash_config";
 import { GitHubRepository } from "../../domain/GitHubRepository";
-import { GitHubApiGitHubRepositoryRepository } from "../../infrastructure/GitHubApiGitHubRepositoryRepository";
+import { GithubRepositoryRepository } from "../../domain/GitHubRepositoryRepository";
 import styles from "./Dashboard.module.scss";
 
 const isoToReadableDate = (lastUpdate: Date): string => {
@@ -32,8 +32,7 @@ const isoToReadableDate = (lastUpdate: Date): string => {
 	return `${diffDays} days ago`;
 };
 
-export function Dashboard() {
-	const repository = new GitHubApiGitHubRepositoryRepository(config.github_access_token);
+export function Dashboard({ repository }: { repository: GithubRepositoryRepository }) {
 	const [repositoryData, setRepositoryData] = useState<GitHubRepository[]>([]);
 
 	useEffect(() => {
