@@ -1,11 +1,13 @@
-import { CiStatus, GitHubApiResponses, PullRequest, RepositoryData } from "./GithubApiResponses";
+import { GitHubRepository } from "../domain/GitHubRepository";
+import { GithubRepositoryRepository } from "../domain/GitHubRepositoryRepository";
+import { CiStatus, PullRequest, RepositoryData } from "./GithubApiResponses";
 
 interface RepositoryId {
 	organization: string;
 	name: string;
 }
 
-export class GitHubApiGitHubRepositoryRepository {
+export class GitHubApiGitHubRepositoryRepository implements GithubRepositoryRepository {
 	private readonly endpoints = [
 		"https://api.github.com/repos/$organization/$name",
 		"https://api.github.com/repos/$organization/$name/pulls",
@@ -14,7 +16,7 @@ export class GitHubApiGitHubRepositoryRepository {
 
 	constructor(private readonly personalAccessToken: string) {}
 
-	async search(repositoryUrls: string[]): Promise<GitHubApiResponses[]> {
+	async search(repositoryUrls: string[]): Promise<GitHubRepository[]> {
 		const responsePromises = repositoryUrls
 			.map((url) => this.urlToId(url))
 			.map((id) => this.searchBy(id));
@@ -22,8 +24,8 @@ export class GitHubApiGitHubRepositoryRepository {
 		return Promise.all(responsePromises);
 	}
 
-	private async searchBy(repositoryId: RepositoryId): Promise<GitHubApiResponses> {
-		const repositoryRequest = this.endpoints
+	private async searchBy(repositoryId: RepositoryId): Promise<GitHubRepository> {
+		const repositoryRequests = this.endpoints
 			.map((endpoint) => endpoint.replace("$organization", repositoryId.organization))
 			.map((endpoint) => endpoint.replace("$name", repositoryId.name))
 			.map((url) =>
@@ -32,13 +34,36 @@ export class GitHubApiGitHubRepositoryRepository {
 				})
 			);
 
-		return Promise.all(repositoryRequest)
+		return Promise.all(repositoryRequests)
 			.then((responses) => Promise.all(responses.map((response) => response.json())))
-			.then(([repositoryData, pullRequest, ciStatus]) => ({
-				repositoryData: repositoryData as RepositoryData,
-				pullRequests: pullRequest as PullRequest[],
-				ciStatus: ciStatus as CiStatus,
-			}));
+			.then((responses) => {
+				const [repositoryData, pullRequests, ciStatus] = responses as [
+					RepositoryData,
+					PullRequest[],
+					CiStatus
+				];
+
+				return {
+					id: {
+						name: repositoryData.name,
+						organization: repositoryData.organization.login,
+					},
+					url: repositoryData.url,
+					description: repositoryData.description,
+					private: repositoryData.private,
+					updatedAt: new Date(repositoryData.updated_at),
+					hasWorkflows: ciStatus.workflow_runs.length > 0,
+					isLastWorkflowSuccess:
+						ciStatus.workflow_runs.length > 0 &&
+						ciStatus.workflow_runs[0].status === "completed" &&
+						ciStatus.workflow_runs[0].conclusion === "sucess",
+					stars: repositoryData.stargazers_count,
+					watchers: repositoryData.watchers_count,
+					forks: repositoryData.forks_count,
+					issues: repositoryData.open_issues_count,
+					pullRequests: pullRequests.length,
+				};
+			});
 	}
 
 	private urlToId(url: string): RepositoryId {
