@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { mock } from "jest-mock-extended";
 
 import { GitHubRepository } from "../src/domain/GitHubRepository";
+import { GithubRepositoryRepository } from "../src/domain/GitHubRepositoryRepository";
 import { Dashboard } from "../src/sections/dashboard/Dashboard";
 import { GitHubARepositoryMother } from "./GitHubRepositoryMother";
-import { GithubRepositoryRepository } from "../src/domain/GitHubRepositoryRepository";
 
 const mockRepository = mock<GithubRepositoryRepository>();
 
@@ -39,7 +39,9 @@ describe("Dashboard section", () => {
 	});
 
 	it("show last modified date in human readable format", async () => {
-		const gitHubRepository: GitHubRepository = GitHubARepositoryMother.create();
+		const gitHubRepository: GitHubRepository = GitHubARepositoryMother.create({
+			updatedAt: new Date(),
+		});
 
 		mockRepository.search.mockResolvedValue([gitHubRepository]);
 

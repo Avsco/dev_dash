@@ -20,6 +20,7 @@ export class GitHubARepositoryMother {
 			pullRequests: faker.number.int(),
 			updatedAt: faker.date.anytime(),
 			watchers: faker.number.int(),
+			...params,
 		};
 
 		return defaultParams;
