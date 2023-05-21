@@ -1,4 +1,3 @@
-import { ReactComponent as Brand } from "../../assets/svg/brand.svg";
 import { config } from "../../devdash_config";
 import { GithubRepositoryRepository } from "../../domain/GitHubRepositoryRepository";
 import styles from "./Dashboard.module.scss";
@@ -12,12 +11,6 @@ export function Dashboard({ repository }: { repository: GithubRepositoryReposito
 
 	return (
 		<>
-			<header className={styles.header}>
-				<section className={styles.header__container}>
-					<Brand />
-					<h1 className={styles.app__brand}>DevDash_</h1>
-				</section>
-			</header>
 			{repositoryData.length === 0 ? (
 				<div className={styles.empty}>
 					<span>No hay widgets configurados.</span>
