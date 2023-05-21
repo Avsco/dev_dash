@@ -1,11 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { mock } from "jest-mock-extended";
 
 import { GitHubRepository } from "../src/domain/GitHubRepository";
 import { GithubRepositoryRepository } from "../src/domain/GitHubRepositoryRepository";
 import { Dashboard } from "../src/sections/dashboard/Dashboard";
-import { GitHubARepositoryMother } from "./GitHubRepositoryMother";
 import { renderWithRouter } from "./CustomRender";
+import { GitHubARepositoryMother } from "./GitHubRepositoryMother";
 
 const mockRepository = mock<GithubRepositoryRepository>();
 

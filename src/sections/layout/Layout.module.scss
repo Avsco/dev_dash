@@ -1,17 +1,17 @@
 .header {
-	background-color: #1a2233;
+  background-color: #1a2233;
 
-	&__container {
-		display: flex;
-		gap: 2rem;
-		align-items: center;
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 1rem;
-	}
+  &__container {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
 }
 
 .app__brand {
-	color: #3cff64;
-	font-style: italic;
+  color: #3cff64;
+  font-style: italic;
 }
