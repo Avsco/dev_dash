@@ -1,12 +1,12 @@
 import { config } from "../../devdash_config";
-import { GithubRepositoryRepository } from "../../domain/GitHubRepositoryRepository";
+import { GitHubRepositoryRepository } from "../../domain/GitHubRepositoryRepository";
 import styles from "./Dashboard.module.scss";
 import { GitHubRepositoryWidget } from "./GitHubRepositoryWidget";
 import { useGitHubRepositories } from "./useGitHubRepositories";
 
 const gitHubRepositoryUrls = config.widgets.map((widget) => widget.repository_url);
 
-export function Dashboard({ repository }: { repository: GithubRepositoryRepository }) {
+export function Dashboard({ repository }: { repository: GitHubRepositoryRepository }) {
 	const { repositoryData } = useGitHubRepositories(repository, gitHubRepositoryUrls);
 
 	return (
