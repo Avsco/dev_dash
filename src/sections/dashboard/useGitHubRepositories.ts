@@ -10,12 +10,10 @@ export const useGitHubRepositories = (
 	const [repositoryData, setRepositoryData] = useState<GitHubRepository[]>([]);
 
 	useEffect(() => {
-		repository
-			.search(repositoryUrls)
-			.then((repositoryData: GitHubRepository[]) => {
-				setRepositoryData(repositoryData);
-			})
-			.catch(console.error);
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+		repository.search(repositoryUrls).then((repositoryData: GitHubRepository[]) => {
+			setRepositoryData(repositoryData);
+		});
 	}, [repository, repositoryUrls]);
 
 	return { repositoryData };
