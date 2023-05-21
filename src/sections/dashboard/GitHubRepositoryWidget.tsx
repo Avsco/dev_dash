@@ -33,7 +33,7 @@ export const GitHubRepositoryWidget = ({ widget }: { widget: GitHubRepository })
 			<header className={styles.widget__header}>
 				<h2 className={styles.widget__title}>
 					<a
-						href={widget.url}
+						href={`/repository/${widget.id.organization}/${widget.id.name}`}
 						target="_blank"
 						title={`${widget.id.organization}/${widget.id.name}`}
 						rel="noreferrer"
