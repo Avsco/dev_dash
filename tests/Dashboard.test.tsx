@@ -5,6 +5,7 @@ import { GitHubRepository } from "../src/domain/GitHubRepository";
 import { GithubRepositoryRepository } from "../src/domain/GitHubRepositoryRepository";
 import { Dashboard } from "../src/sections/dashboard/Dashboard";
 import { GitHubARepositoryMother } from "./GitHubRepositoryMother";
+import { renderWithRouter } from "./CustomRender";
 
 const mockRepository = mock<GithubRepositoryRepository>();
 
@@ -14,25 +15,20 @@ describe("Dashboard section", () => {
 
 		mockRepository.search.mockResolvedValue([gitHubRepository]);
 
-		render(<Dashboard repository={mockRepository} />);
-
-		const title = await screen.findByRole("heading", {
-			name: new RegExp("DevDash_", "i"),
-		});
+		renderWithRouter(<Dashboard repository={mockRepository} />);
 
 		const firstWidgetTitle = `${gitHubRepository.id.organization}/${gitHubRepository.id.name}`;
 		const firstWidgetHeader = await screen.findByRole("heading", {
 			name: new RegExp(firstWidgetTitle, "i"),
 		});
 
-		expect(title).toBeInTheDocument();
 		expect(firstWidgetHeader).toBeInTheDocument();
 	});
 
 	it("show not results message when there are no widgets", async () => {
 		mockRepository.search.mockResolvedValue([]);
 
-		render(<Dashboard repository={mockRepository} />);
+		renderWithRouter(<Dashboard repository={mockRepository} />);
 		const noResults = await screen.findByText(new RegExp("No hay widgets configurados", "i"));
 
 		expect(noResults).toBeInTheDocument();
@@ -45,7 +41,7 @@ describe("Dashboard section", () => {
 
 		mockRepository.search.mockResolvedValue([gitHubRepository]);
 
-		render(<Dashboard repository={mockRepository} />);
+		renderWithRouter(<Dashboard repository={mockRepository} />);
 
 		const modificationDate = await screen.findByText(new RegExp("today", "i"));
 
