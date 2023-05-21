@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { GitHubRepository } from "../../domain/GitHubRepository";
-import { GithubRepositoryRepository } from "../../domain/GitHubRepositoryRepository";
+import { GitHubRepositoryRepository } from "../../domain/GitHubRepositoryRepository";
 
 export const useGitHubRepositories = (
-	repository: GithubRepositoryRepository,
+	repository: GitHubRepositoryRepository,
 	repositoryUrls: string[]
 ): { repositoryData: GitHubRepository[] } => {
 	const [repositoryData, setRepositoryData] = useState<GitHubRepository[]>([]);
@@ -12,7 +12,7 @@ export const useGitHubRepositories = (
 	useEffect(() => {
 		repository
 			.search(repositoryUrls)
-			.then((repositoryData) => {
+			.then((repositoryData: GitHubRepository[]) => {
 				setRepositoryData(repositoryData);
 			})
 			.catch(console.error);
