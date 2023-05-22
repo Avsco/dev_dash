@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { ReactComponent as Check } from "../../assets/svg/check.svg";
 import { ReactComponent as Error } from "../../assets/svg/error.svg";
 import { ReactComponent as PullRequests } from "../../assets/svg/git-pull-request.svg";
@@ -32,14 +34,13 @@ export const GitHubRepositoryWidget = ({ widget }: { widget: GitHubRepository })
 		<article className={styles.widget} key={`${widget.id.organization}/${widget.id.name}`}>
 			<header className={styles.widget__header}>
 				<h2 className={styles.widget__title}>
-					<a
-						href={`/repository/${widget.id.organization}/${widget.id.name}`}
+					<Link
+						to={`/repository/${widget.id.organization}/${widget.id.name}`}
 						target="_blank"
 						title={`${widget.id.organization}/${widget.id.name}`}
-						rel="noreferrer"
 					>
 						{widget.id.organization}/{widget.id.name}
-					</a>
+					</Link>
 				</h2>
 				{widget.private ? <Lock /> : <Unlock />}
 			</header>
