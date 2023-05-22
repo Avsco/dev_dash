@@ -10,7 +10,6 @@ export const useGitHubRepositories = (
 	const [repositoryData, setRepositoryData] = useState<GitHubRepository[]>([]);
 
 	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		repository.search(repositoryUrls).then((repositoryData: GitHubRepository[]) => {
 			setRepositoryData(repositoryData);
 		});
